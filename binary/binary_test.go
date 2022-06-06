@@ -37,3 +37,11 @@ func TestParseBinaryError(t *testing.T) {
 		t.Errorf("got %#v; but want %#v\n", err.Error(), want)
 	}
 }
+
+func BenchmarkParse(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		for _, tc := range testCases {
+			Parse(tc.binary)
+		}
+	}
+}
