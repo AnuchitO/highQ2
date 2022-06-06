@@ -6,12 +6,12 @@ import (
 	"strconv"
 )
 
-/* ParseBinary
+/* Parse
 input: a string of binary digits
 	- "11", "1001", "11010", "10001101000"
 output: the decimal equivalent of the binary digits or an error
 */
-func ParseBinary(bin string) (int, error) {
+func Parse(bin string) (int, error) {
 	dec := 0
 	for _, v := range bin {
 		n, ok := strconv.Atoi(string(v))
