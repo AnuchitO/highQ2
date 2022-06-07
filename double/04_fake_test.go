@@ -13,7 +13,15 @@ func (fs FakeSearcher) Search(people []*Person, firstName string, lastName strin
 }
 
 func TestFindCallsSearchAndReturnsEmptyStringForNoPerson(t *testing.T) {
-	phonebook := &Phonebook{}
+	phonebook := &Phonebook{
+		People: []*Person{
+			&Person{
+				FirstName: "Jane",
+				LastName:  "Doe",
+				Phone:     "+31 65 222 333",
+			},
+		},
+	}
 	fake := &FakeSearcher{}
 
 	phone, _ := phonebook.Find(fake, "Jane", "Doe")

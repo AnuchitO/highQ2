@@ -11,10 +11,10 @@ func (ds DummySearcher) Search(people []*Person, firstName, lastName string) *Pe
 func TestFindReturnsError(t *testing.T) {
 	phonebook := &Phonebook{}
 
-	want := ErrMissingArgs
-	_, got := phonebook.Find(DummySearcher{}, "", "")
+	_, err := phonebook.Find(DummySearcher{}, "", "")
 
-	if got != want {
-		t.Errorf("Want '%s', got '%s'", want, got)
+	want := ErrMissingArgs
+	if err != want {
+		t.Errorf("Want '%s', err '%s'", want, err)
 	}
 }

@@ -17,8 +17,9 @@ func (ss StubSearcher) Search(people []*Person, firstName, lastName string) *Per
 func TestFindReturnsPerson(t *testing.T) {
 	fakePhone := "+31 65 222 333"
 	phonebook := &Phonebook{}
+	query := StubSearcher{fakePhone}
 
-	phone, _ := phonebook.Find(StubSearcher{fakePhone}, "Jane", "Doe")
+	phone, _ := phonebook.Find(query, "Jane", "Doe")
 
 	if phone != fakePhone {
 		t.Errorf("Want '%s', got '%s'", fakePhone, phone)
