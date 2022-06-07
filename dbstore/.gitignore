@@ -4,3 +4,4 @@ db.test.bin
 app.db.bin
 vendor/
 tmp/
+.vscode/

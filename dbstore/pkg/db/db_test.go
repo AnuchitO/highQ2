@@ -1,42 +1,30 @@
 package db
 
 import (
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
 	"github.com/anuchito/dbstore/pb"
 )
 
-var testdb = "db.test.bin"
-
-func clean(filename string) error {
-	err := os.Remove(filename)
-
+func setup(t *testing.T) (string, func()) {
+	dir, err := ioutil.TempDir("", "dbstore")
 	if err != nil {
-		return err
+		t.Fatalf("error creating temp dir: %v", err)
 	}
-	return nil
-}
 
-func before(filename string) {
-	err := clean(filename)
-	if err != nil {
-		// panic("could not delete db file")
-	}
-}
+	teardown := func() { os.RemoveAll(dir) }
 
-func teardown(filename string) {
-	err := clean(filename)
-	if err != nil {
-		// panic("could not delete db file")
-	}
+	return filepath.Join(dir, "db.test.bin"), teardown
 }
 
 func TestSingleGet(t *testing.T) {
 	t.Parallel()
-	before(testdb)
-	defer teardown(testdb)
+	testdb, teardown := setup(t)
+	defer teardown()
 	db := NewDb(testdb)
 	key := "foo-key"
 	value := "foo-value"
@@ -56,8 +44,8 @@ func TestSingleGet(t *testing.T) {
 
 func TestMultipleGet(t *testing.T) {
 	t.Parallel()
-	before(testdb)
-	defer teardown(testdb)
+	testdb, teardown := setup(t)
+	defer teardown()
 	db := NewDb(testdb)
 	key := "foo-key"
 	value := "foo-value"
@@ -89,8 +77,8 @@ func TestMultipleGet(t *testing.T) {
 func TestSingleDelete(t *testing.T) {
 	t.Parallel()
 	// prepare
-	before(testdb)
-	defer teardown(testdb)
+	testdb, teardown := setup(t)
+	defer teardown()
 	db := NewDb(testdb)
 	key := "foo-key"
 	value := "foo-value"
@@ -109,8 +97,8 @@ func TestSingleDelete(t *testing.T) {
 func TestSingleRecover(t *testing.T) {
 	t.Parallel()
 	// prepare
-	before(testdb)
-	defer teardown(testdb)
+	testdb, teardown := setup(t)
+	defer teardown()
 	db := NewDb(testdb)
 	key := "foo-key"
 	value := "foo-value"
@@ -141,8 +129,8 @@ func TestSingleRecover(t *testing.T) {
 func TestSingleRecoverWithDelete(t *testing.T) {
 	t.Parallel()
 	// prepare
-	before(testdb)
-	defer teardown(testdb)
+	testdb, teardown := setup(t)
+	defer teardown()
 	db := NewDb(testdb)
 	key := "foo-key"
 	value := "foo-value"
@@ -173,8 +161,8 @@ func TestSingleRecoverWithDelete(t *testing.T) {
 
 func TestMultipleRecover(t *testing.T) {
 	t.Parallel()
-	before(testdb)
-	defer teardown(testdb)
+	testdb, teardown := setup(t)
+	defer teardown()
 	db := NewDb(testdb)
 
 	// first item
