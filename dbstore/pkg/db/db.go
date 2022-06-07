@@ -19,14 +19,9 @@ type DB struct {
 	offsetMap map[string]int64
 }
 
-// NewDb return a new intialized Db
-func NewDb(filename string) *DB {
-	f, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR, 0644)
-	if err != nil {
-		log.Fatalf("error file opening for write")
-	}
+func New(f *os.File) *DB {
 	offsetMap := make(map[string]int64)
-	db := &DB{filename: filename, f: f, offsetMap: offsetMap}
+	db := &DB{filename: f.Name(), f: f, offsetMap: offsetMap}
 	return db
 }
 
