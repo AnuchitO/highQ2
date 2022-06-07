@@ -26,10 +26,6 @@ type Mongo struct {
 	db string
 }
 
-type inserter interface {
-	Insert(collection string, data interface{}) error
-}
-
-func Insert(db inserter, collection string, data interface{}) error {
+func Insert(db Database, collection string, data interface{}) error {
 	return db.Insert(collection, data)
 }
