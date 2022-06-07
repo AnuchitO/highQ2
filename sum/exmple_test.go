@@ -3,8 +3,7 @@ package sum
 import "fmt"
 
 func ExampleSum() {
-	r := Sum(1, 2)
-	fmt.Println(r)
+	fmt.Println(Sum(1, 2))
 	// Output:
 	// 3
 }
