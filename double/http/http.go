@@ -12,8 +12,23 @@ type Response struct {
 	Description string `json:"description"`
 }
 
+type Caller interface {
+	Get(url string) (resp *http.Response, err error)
+}
+
+type HTTP struct {
+}
+
+func (HTTP) Get(url string) (resp *http.Response, err error) {
+	return http.Get(url)
+}
+
 func MakeHTTPCall(url string) (*Response, error) {
-	resp, err := http.Get(url)
+	return makeHTTPCall(HTTP{}, url)
+}
+
+func makeHTTPCall(client Caller, url string) (*Response, error) {
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, err
 	}
